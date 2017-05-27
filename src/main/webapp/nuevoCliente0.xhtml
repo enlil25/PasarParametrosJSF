@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h2>Nuevo cliente</h2>
+        <hr/>
+        <h:messages infoStyle="color:blue;" globalOnly="true" layout="table"/>
+        <h:form>
+            <h:panelGrid columns="3">
+                <h:outputLabel value="Nombre" for="nombre"/>
+                <h:inputText value="#{clientebean.cliente.nombre}" id="nombre" required="true"/>
+                <h:message for="nombre" styleClass="color:red;"/>
+                <h:outputLabel value="Direccion" for="direccion"/>
+                <h:inputTextarea value="#{clientebean.cliente.direccion}" id="direccion"/>
+                <h:message for="direccion" styleClass="color:red;"/>
+                <h:commandButton value="Registrar" action="#{clientebean.registrarCliente}">
+                    <f:ajax execute="@form" render=":lstclientes" onevent="action"/>
+                </h:commandButton>
+            </h:panelGrid>
+        </h:form>
+<!--este uso enlaces con peticiones get , los parametros se pasan en el enlace-->
+        <!--listado de cliente usando ajax -->
+        <h:dataTable id="lstclientes" value="#{clienteservice.listarTodosLosClientes()}" var="cliente">
+            <h:column>
+                <f:facet name="header">Codigo</f:facet>
+                <h:outputText value="#{cliente.codigo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombre</f:facet>
+                <h:outputText value="#{cliente.nombre}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Direccion</f:facet>
+                <h:outputText value="#{cliente.direccion}"/>
+            </h:column>     
+            <h:column>
+                <f:facet name="header">Opcion1</f:facet>
+                <h:link outcome="editarCliente"  value="Editar">
+                    <f:param name="codigo" value="#{cliente.codigo}"/>
+                </h:link>
+            </h:column>  
+            <h:column>
+                <f:facet name="header">Opcion2</f:facet>
+                <h:link outcome="eliminarCliente" value="Eliminar"/>
+            </h:column>  
+        </h:dataTable>
+
+    </h:body>
+</html>
